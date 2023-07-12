@@ -6,17 +6,22 @@ from .models import Rating,Meal
 from .serializers import MealSerializers,RatingSerializers,UserSerializers
 from rest_framework.decorators import action
 import rest_framework.status as status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import *
 
 class MealViewSet(viewsets.ModelViewSet):
    queryset=Meal.objects.all()
    serializer_class=MealSerializers
+   authentication_classes=(TokenAuthentication,)
+   permission_classes=(IsAuthenticated,)
    @action(methods=['POST'],detail=True)
    def meal_rate(self, request, pk=None):
         if 'stars' in request.data:
             meal = Meal.objects.get(id=pk)
             stars = request.data['stars']
-            username = request.data['username']
-            user = User.objects.get(username=username)
+            #username = request.data['username']
+            #user = User.objects.get(username=username)
+            user=request.user
 
             try:
                 rating = Rating.objects.get(user=user.id, meal=meal.id) 
@@ -47,3 +52,10 @@ class MealViewSet(viewsets.ModelViewSet):
 class RatingViewSet(viewsets.ModelViewSet):
     queryset=Rating.objects.all()
     serializer_class=RatingSerializers
+    authentication_classes=(TokenAuthentication,)
+    permission_classes=(IsAuthenticated,)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset=User.objects.all()
+    serializer_class=UserSerializers
+    authentication_classes=(TokenAuthentication,)
+    permission_classes=(IsAuthenticated,)

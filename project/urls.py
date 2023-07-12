@@ -18,10 +18,13 @@ from django.contrib import admin
 from django.urls import path,include
 from pages import views
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken.views import obtain_auth_token
 router=DefaultRouter()
 router.register('meal',views.MealViewSet,basename='meal')
 router.register('rating',views.RatingViewSet,basename='rating')
+router.register('users',views.UserViewSet,basename='users')
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('usertoken/',obtain_auth_token),
 ]
 urlpatterns+=router.urls

@@ -4,6 +4,15 @@ from django.contrib.auth.models import User
 class Meal(models.Model):
     meal=models.CharField(max_length=20)
     description=models.TextField()
+    def no_of_rating(self):
+        no_ratings=Rating.objects.filter(meal=self).count()
+        return no_ratings
+    def avg_rating(self):
+        sum_ratings=0
+        ratings=Rating.objects.filter(meal=self)
+        for rate in ratings:
+            sum_ratings+=rate.stars
+        return sum_ratings/Rating.objects.filter(meal=self).count()
     def __str__(self):
         return self.meal
 
