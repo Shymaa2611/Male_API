@@ -19,8 +19,6 @@ class MealViewSet(viewsets.ModelViewSet):
         if 'stars' in request.data:
             meal = Meal.objects.get(id=pk)
             stars = request.data['stars']
-            #username = request.data['username']
-            #user = User.objects.get(username=username)
             user=request.user
 
             try:
